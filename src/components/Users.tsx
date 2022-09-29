@@ -24,7 +24,7 @@ export const Users = () => {
                 </tr>
             </thead>
             <tbody>
-
+                
             </tbody>
         </table>
     </>
