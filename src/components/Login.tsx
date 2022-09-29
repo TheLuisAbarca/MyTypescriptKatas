@@ -14,7 +14,14 @@ const initialState:AuthState ={
     name: ''
 };
 
-type AuthAction = { type: 'logout' };
+type LoginPayload = {
+    username: string, 
+    name: string
+}
+
+type AuthAction = 
+    | { type: 'logout' }
+    | { type: 'login', payload: LoginPayload };
 
 const authReducer = (state: AuthState, action: AuthAction): AuthState => {
     switch (action.type) {
@@ -26,6 +33,14 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
                 name: ''
             };
             
+        case 'login':
+            const { name, username } = action.payload;
+            return {
+                validating: false,
+                token: 'ZXC456',
+                username,
+                name
+            }
     
         default:
             return state;
@@ -34,13 +49,27 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 
 export const Login = () => {
 
-    const [{validating}, dispatch] = useReducer(authReducer, initialState);
+    const [{validating, token, name}, dispatch] = useReducer(authReducer, initialState);
     useEffect(() => {
       setTimeout(() => {
         dispatch({ type: 'logout'})
       }, 1500);
     
     }, []);
+
+    const login = () => {
+        dispatch({
+            type: 'login', 
+            payload: {
+                name: 'Washo',
+                username: 'labarca'
+            }
+        })
+    }
+    
+    const logout = () => {
+        dispatch({type: 'logout', })
+    }
 
     if ( validating ) {
         return (
@@ -58,21 +87,37 @@ export const Login = () => {
     <>
         <h3>Login</h3>
 
-        <div className="alert alert-danger">
-            Not Authenticated!
-        </div>
+        {
+            (token)
+            ? <div className="alert alert-success">Authenticated as: { name } </div>
+            : <div className="alert alert-danger">Not Authenticated!</div> 
+        }
 
-        <div className="alert alert-success">
-            Authenticated
-        </div>
+        {
+            (token)
+            ? 
+            (
+                <button 
+                    className="btn btn-danger"
+                    onClick={ logout }
+                >
+                    Logout
+                </button>
+            )
+            : 
+            (
+                <button 
+                    className="btn btn-primary"
+                    onClick={ login }
+                >
+                    Login
+                </button>
+            )
+        }
 
-        <button className="btn btn-primary">
-            Login
-        </button>
-        &nbsp;
-        <button className="btn btn-danger">
-            Logout
-        </button>
+
+        
+
     </>
   )
 }
