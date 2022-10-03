@@ -1,6 +1,8 @@
 // import { BasicTypes } from "./typescript/BasicTypes";
 
-import { Users } from "./components/Users";
+import { Forms } from "./components/Forms";
+
+// import { Users } from "./components/Users";
 
 // import { Login } from "./components/Login";
 
@@ -23,7 +25,8 @@ const App = () => {
       {/* <Counter/> */}
       {/* <CounterWithHook/> */}
       {/* <Login/> */}
-      <Users/>
+      {/* <Users/> */}
+      <Forms/>
     </div>
   )
 }
