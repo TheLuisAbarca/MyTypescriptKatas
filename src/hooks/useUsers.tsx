@@ -16,14 +16,25 @@ export const useUsers = () => {
                 page: pageRef.current
             }
         });
-
+        
         if( answer.data.data.length > 0){
             setUser( answer.data.data );
-            pageRef.current ++;
         } else {
+            pageRef.current --;
             alert("There is no more registries or pages.");
         }
-        setUser( answer.data.data );
-    }
-    return { users, loadUsers };
+    };
+
+    const nextPage = () => {
+        pageRef.current ++;
+        loadUsers();    
+    };
+
+    const previousPage = () => {
+        if ( pageRef.current > 1){
+            pageRef.current --;
+            loadUsers();
+        } 
+    };
+    return { users, nextPage, previousPage };
 }
