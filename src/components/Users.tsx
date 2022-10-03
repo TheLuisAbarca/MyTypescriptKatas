@@ -1,38 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import { reqResApi } from "../api/reqRes";
-import { ReqResList, User } from "../interfaces/reqRes";
+import { useUsers } from '../hooks/useUsers';
+import { User } from '../interfaces/reqRes';
 
 export const Users = () => {
-
-    const [users, setUser] = useState<User[]>([]);
-    const pageRef = useRef(1);
-
-    useEffect(() => {
-        loadUsers();
-    }, []);
-
-    const loadUsers = async() => {
-        const answer = await reqResApi.get<ReqResList>('/users', {
-            params: {
-                page: pageRef.current
-            }
-        });
-
-        if( answer.data.data.length > 0){
-            setUser( answer.data.data );
-            pageRef.current ++;
-        } else {
-            alert("There is no more registries or pages.");
-        }
-        setUser( answer.data.data );
-        /*
-        .then( resp => {
-            console.log(resp.data.data[0].last_name);
-            setUser(resp.data.data);
-        })
-        .catch( console.log );
-        */
-    }
+    const { users, loadUsers } = useUsers();
 
     const renderItem = ( {id, first_name, last_name, email, avatar}: User ) => {
         return (
@@ -74,7 +44,14 @@ export const Users = () => {
             className="btn btn-primary"
             onClick={ loadUsers }
         >
-            Next 
+            Previous 
+        </button>
+        &nbsp;
+        <button
+            className="btn btn-primary"
+            onClick={ loadUsers }
+        >
+             Next
         </button>
     </>
   )
